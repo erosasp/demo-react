@@ -11,7 +11,7 @@ const rootRoute = new RootRoute({
 })
 
 const productSearchSchema = z.object({
-    id: z.number().catch(1),
+    id: z.number().catch(1)
 })
 
 const ROUTES = [
