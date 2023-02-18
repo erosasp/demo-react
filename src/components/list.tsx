@@ -1,12 +1,9 @@
+import { Link } from '@tanstack/react-router';
 import { FC } from 'react'
-export type listType = { id: string, title: string, completed: boolean };
-interface Props {
-  parentData: { [key: string]: any }[]
-}
+import { Props } from '~/shared/models';
 
-const List: FC<Props> = (parentData) => {
-  const listData = Object.values(parentData.parentData);
-  const keys = Object.keys(parentData.parentData[0]);
+export type ListType = { id: string, title: string, completed: boolean };
+const List: FC<Props<ListType[]>> = ({ parentData }) => {
   return (
     <div
       style={{
@@ -23,16 +20,24 @@ const List: FC<Props> = (parentData) => {
             <th>Id</th>
             <th>Title</th>
             <th>Completed</th>
+            <th>Details</th>
           </tr>
         </thead>
         <tbody>
           {
-            listData.map((data) => (
-              <tr key={(data.id).toString()}>{
-                keys.map((key) => (
-                  <td key={data.id + key.toString()}>{data[key].toString()}</td>
+            parentData.map((data) => (
+              <tr key={data.id}>{
+                Object.keys(data).map((key) => (
+                  <td key={data.id + key}>{data[key as keyof ListType]}</td>
                 ))
               }
+                <td>
+                  <Link to="/details/"
+                    search={{
+                      id: data.id
+                    }}
+                  >more details</Link>
+                </td>
               </tr>
             ))
           }

@@ -1,7 +1,9 @@
-import Home from '~/components';
+import NavBar from './shared/components/navbar';
 
 function App() {
-  return <Home />;
+  return (
+    <NavBar />
+  );
 }
 
 export default App;

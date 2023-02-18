@@ -1,15 +1,17 @@
-import List, { listType } from "./list";
-import dataList from '../data/dataList.json'
+import List, { ListType } from "./list";
 import { useEffect, useState } from "react";
-const Home = () => {
-  const [data, setData] = useState(dataList);
+
+const Index = () => {
+  const [data, setData] = useState<ListType[]>([]);
   useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/todos')
-      .then((response) => response.json())
-      .then((data) => data.slice(0, 20).map((m: listType) => {
-        return { id: m.id, title: m.title, completed: m.completed } as listType;
-      }))
-      .then((data) => setData(data))
+    const getData = async () => {
+      const response = await fetch('https://jsonplaceholder.typicode.com/todos');
+      const json = (await response.json()).slice(0, 20).map((m: ListType) => {
+        return { id: m.id, title: m.title, completed: m.completed } as ListType;
+      });
+      setData(json);
+    }
+    getData();
   }, []);
   return (
     <div
@@ -28,4 +30,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Index;
