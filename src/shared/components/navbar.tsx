@@ -8,7 +8,7 @@ const NavBar = () => {
                 justifyContent: 'space-evenly'
             }}>
                 <Link to="/">Home</Link>
-                <Link to="/about">About</Link>
+                <Link to="/form">Form</Link>
             </div>
             <hr />
             <Outlet />

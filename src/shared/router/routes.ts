@@ -3,7 +3,7 @@ import Index from "~/components";
 import Details from "~/components/details";
 import { z } from 'zod'
 import App from "~/App";
-import About from "~/components/about";
+import Form from "~/components/form";
 
 // Create a root route
 const rootRoute = new RootRoute({
@@ -22,8 +22,8 @@ const ROUTES = [
     }),
     new Route({
         getParentRoute: () => rootRoute,
-        path: "/about",
-        component: About
+        path: "/form",
+        component: Form
     }),
     new Route({
         getParentRoute: () => rootRoute,
