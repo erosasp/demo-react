@@ -1,5 +1,5 @@
-import List, { ListType } from "./list";
-import { useEffect, useState } from "react";
+import List, { ListType } from './List';
+import { useEffect, useState } from 'react';
 
 const Index = () => {
   const [data, setData] = useState<ListType[]>([]);
@@ -10,21 +10,12 @@ const Index = () => {
         return { id: m.id, title: m.title, completed: m.completed } as ListType;
       });
       setData(json);
-    }
+    };
     getData();
   }, []);
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        paddingTop: '50px',
-      }}
-    >
-      <h2>ToDos</h2>
+    <div className='flex flex-col items-center justify-center text-center pt-12'>
+      <h2 className='text-3xl font-bold'>ToDos</h2>
       <List parentData={data} />
     </div>
   );

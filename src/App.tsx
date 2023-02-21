@@ -1,9 +1,7 @@
-import NavBar from './shared/components/navbar';
+import NavBar from './shared/components/Navbar';
 
 function App() {
-  return (
-    <NavBar />
-  );
+  return <NavBar />;
 }
 
 export default App;
