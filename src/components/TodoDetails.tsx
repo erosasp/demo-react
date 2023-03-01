@@ -1,12 +1,12 @@
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { ListType } from './List';
+import { ListType } from './TodoList';
 
 export interface DetailSearch {
   id: string;
 }
 
-const Details = () => {
+const TodoDetails = () => {
   const [data, setData] = useState<ListType>();
   const { id }: DetailSearch = useParams({ from: '/details/$id' });
   useEffect(() => {
@@ -21,7 +21,7 @@ const Details = () => {
   }, [id]);
   return (
     <>
-      <h2 className='text-3xl font-bold'>Details</h2>
+      <h2 className='text-3xl font-bold'>ToDos Details</h2>
       <div className='flex flex-col p-6'>
         <p>Id: {data?.id ?? '1'}</p>
         <p>Title: {data?.title ?? 'No'}</p>
@@ -31,4 +31,4 @@ const Details = () => {
   );
 };
 
-export default Details;
+export default TodoDetails;

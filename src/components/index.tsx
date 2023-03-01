@@ -1,4 +1,4 @@
-import List, { ListType } from './List';
+import List, { ListType } from './TodoList';
 import { useEffect, useState } from 'react';
 
 const Index = () => {
@@ -6,7 +6,7 @@ const Index = () => {
   useEffect(() => {
     const getData = async () => {
       const response = await fetch('https://jsonplaceholder.typicode.com/todos');
-      const json = (await response.json()).slice(0, 20).map((m: ListType) => {
+      const json = (await response.json()).map((m: ListType) => {
         return { id: m.id, title: m.title, completed: m.completed } as ListType;
       });
       setData(json);

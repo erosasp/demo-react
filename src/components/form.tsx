@@ -1,43 +1,76 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { FormEvent, useState } from 'react';
+import FormInput, { FormInputHandler } from '~/shared/components/FormInput';
+import FormButton from '~/shared/components/FormButton';
 
-enum EFields {
+export enum EFields {
   name = 'name',
   lastName = 'lastName',
   age = 'age',
 }
 
+type FormFields = keyof typeof EFields;
+interface FormField {
+  title: FormFields;
+  value: string;
+  valid: boolean;
+  required: boolean;
+}
+interface DummyField {
+  form: {
+    name: FormField;
+    lastName: FormField;
+    age: FormField;
+  };
+  valid: boolean;
+}
+
+const dummy: () => DummyField = () => {
+  return {
+    form: {
+      name: {
+        title: 'name',
+        value: '',
+        valid: false,
+        required: true,
+      },
+      lastName: {
+        title: 'lastName',
+        value: '',
+        valid: false,
+        required: true,
+      },
+      age: {
+        title: 'age',
+        value: '',
+        valid: true,
+        required: false,
+      },
+    },
+    valid: false,
+  };
+};
+
 const Form = () => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [valid, setValid] = useState(false);
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+  const [data, setData] = useState(dummy());
+  const handleChange: FormInputHandler = ({ target }) => {
     const { id, value } = target;
-    switch (id) {
-      case EFields.name:
-        setName(value);
-        break;
-      case EFields.age:
-        setAge(value);
-        break;
-      case EFields.lastName:
-        setLastName(value);
-        break;
-      default:
-        console.log('Not in my enum');
-        break;
-    }
+    const key = id as keyof typeof EFields;
+    const { form } = { ...data };
+    const validField = form[key].required ? value.length > 0 : true;
+    form[key] = { ...form[key], value: value, valid: validField };
+    const validFields = Object.keys(form).filter((f) => form[f as keyof typeof EFields]?.valid);
+    const valid = validFields.length === Object.keys(data.form).length;
+    setData({ form, valid });
   };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (name && age && lastName) {
-      console.log('name', name, 'age', age, 'lastName', lastName);
-      setValid((val) => {
-        console.log('anterior', val);
-        return true;
-      });
-      console.log('isValid:', valid);
-    }
+    console.log('SUBMITTED', data.form);
+  };
+  const handleAbort = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('dummy', dummy());
+
+    setData(dummy());
   };
   return (
     <>
@@ -46,56 +79,38 @@ const Form = () => {
         onSubmit={(e) => {
           handleSubmit(e);
         }}
+        onReset={(e) => {
+          handleAbort(e);
+        }}
       >
-        <div style={{ display: 'flex', flexFlow: 'column wrap' }}>
-          <div style={{ alignSelf: 'center', padding: '10px' }}>
-            <label htmlFor='name'>Name:</label>
-            <br />
-            <input
-              type='text'
-              value={name}
-              required
-              onChange={(e) => {
-                handleChange(e);
-              }}
-              id='name'
+        <div className='flex flex-wrap flex-col'>
+          <div className='self-center py-3 px-2 rounded-md border-2 border-fuchsia-50'>
+            <h3>Form</h3>
+            <FormInput
+              name={EFields.name}
+              value={data.form.name.value}
+              handler={handleChange}
+              required={data.form.name.required}
             />
-            <br />
-          </div>
-          <div style={{ alignSelf: 'center', padding: '10px' }}>
-            <label htmlFor='lastName'>Last Name:</label>
-            <br />
-            <input
-              type='text'
-              value={lastName}
-              required
-              onChange={(e) => {
-                handleChange(e);
-              }}
-              id='lastName'
+            <FormInput
+              name={EFields.lastName}
+              value={data.form.lastName.value}
+              handler={handleChange}
+              required={data.form.lastName.required}
             />
-            <br />
-          </div>
-          <div style={{ alignSelf: 'center', padding: '10px' }}>
-            <label htmlFor='age'>Age:</label>
-            <br />
-            <input
-              type='text'
-              value={age}
-              required
-              onChange={(e) => {
-                handleChange(e);
-              }}
-              id='age'
+            <FormInput
+              name={EFields.age}
+              value={data.form.age.value}
+              handler={handleChange}
+              required={data.form.age.required}
             />
-            <br />
+            <div className='self-center p-3'>
+              <FormButton type='submit' title='Submit' disabled={!data.valid} />
+            </div>
+            <div className='self-center p-3'>
+              <FormButton type='reset' title='Reset' disabled={false} />
+            </div>
           </div>
-          <div style={{ alignSelf: 'center', padding: '10px' }}>
-            <button type='submit' value='Submit'>
-              Submit
-            </button>
-          </div>
-          <div></div>
         </div>
       </form>
     </>

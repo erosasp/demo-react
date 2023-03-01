@@ -2,7 +2,7 @@ import { RootRoute, Route } from '@tanstack/react-router';
 import Index from '~/components';
 import { z } from 'zod';
 import App from '~/App';
-import Details from '~/components/Details';
+import Details from '~/components/TodoDetails';
 import Form from '~/components/Form';
 
 // Create a root route
